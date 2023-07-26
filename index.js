@@ -106,6 +106,7 @@ function submitEvent(event) {
   const { target } = event
   const newLesson = target.taskName.value
   checkNewTaskValid(newLesson.trim())
+  windowThemeChange4ONE() // if Dark THEME to change style
 }
 
 //// create SPAN for Error Message/////////////
@@ -292,7 +293,7 @@ function deleteFunc() {
 }
 
 ////CHANGE SITE THEME COLOR
-//Function
+//Function for AllQuestions
 const windowThemeChange = ({
   Background,
   TextColor,
@@ -327,7 +328,7 @@ const windowThemeChange = ({
   })
 }
 
-////THEME CHANGE ACTION
+///THEME CHANGE ACTION
 window.addEventListener('keydown', (event) => {
   const { code } = event
   let isDark = false
@@ -337,7 +338,7 @@ window.addEventListener('keydown', (event) => {
     //CHECK THEME: Dark or White
     let someButtonELT = document.querySelector('button')
     let SomeBStyle = someButtonELT.style.border
-    let isDark = Boolean(SomeBStyle === 'none') || !SomeBStyle
+    isDark = Boolean(SomeBStyle === 'none') || !SomeBStyle
 
     //if DARK OR WHITE
     if (isDark) {
@@ -357,3 +358,45 @@ window.addEventListener('keydown', (event) => {
     }
   }
 })
+
+//Function THEME CHANGE for NEW Question
+function windowThemeChange4ONE() {
+  let isDarkNoW = false
+  //CHECK THEME: Dark or White
+  let someButtonELT = document.querySelector('button')
+  let SomeBStyle = someButtonELT.style.border
+  isDarkNoW = SomeBStyle !== 'none' && Boolean(SomeBStyle)
+  // variants of Colors
+  let TextColor,
+    ButtonsBorder = ''
+
+  if (isDarkNoW) {
+    TextColor = '#ffffff'
+    ButtonsBorder = '1px solid #ffffff'
+  } else {
+    TextColor = 'initial'
+    ButtonsBorder = 'none'
+  }
+
+  const taskList = document.querySelector('.tasks-list')
+  const newRow = taskList.lastChild
+  ////Text color
+  newRow.style.color = TextColor
+
+  //Buttons Color
+  const delButton = newRow.querySelector('button')
+  delButton.style.border = ButtonsBorder
+
+  //CheckBox Color
+  const taskInput = newRow.querySelector('input')
+  const taskLabel = newRow.querySelector('label')
+  //Change classes because JS can't operate pseudoelement ::before
+  if (isDarkNoW) {
+    //input and label goes together with same index
+    taskInput.classList.replace('checkbox-form__checkbox', 'isDark__checkbox')
+    taskLabel.classList.toggle('label__isDark')
+  } else {
+    taskInput.classList.replace('isDark__checkbox', 'checkbox-form__checkbox')
+    taskLabel.classList.toggle('label__isDark')
+  }
+}
